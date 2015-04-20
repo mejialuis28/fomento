@@ -1,1 +1,2 @@
 // TODO: Tengo que mostrar la imagen en la edición y permitir editarla.
+// TODO:
