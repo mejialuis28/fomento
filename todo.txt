@@ -1,2 +1,2 @@
 // TODO: Tengo que mostrar la imagen en la edición y permitir editarla.
-// TODO: Lo sigo editando
+// TODO: Lo sigo editando. Más
