@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="text-center">
-        <h1>Mi primera Ruta en Laravel</h1>
+        <h1>Bienvenido!</h1>
     </div>
 @endsection
