@@ -41,3 +41,7 @@ Route::get('admin/administradores', 'AdministradoresController@index');
 Route::post('admin/administradores/create', 'AdministradoresController@store');
 Route::delete('admin/administradores/delete/{id}', 'AdministradoresController@destroy');
 Route::post('admin/administradores/buscarusuario', 'AdministradoresController@buscar');
+
+// Rutas de reservas
+Route::get('reservas/create', 'ReservasController@create');
+Route::post('inventario/create', 'InventarioController@store');
