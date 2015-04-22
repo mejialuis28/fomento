@@ -2,7 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Categoria;
 use Illuminate\Http\Request;
 
 class ReservasController extends Controller {
@@ -33,7 +33,8 @@ class ReservasController extends Controller {
 	 */
 	public function create()
 	{
-		return view('reservas.create');
+		$categorias = Categoria::where('activo', '=', true)->get();
+		return view('reservas.create', compact('categorias'));
 	}
 
 	/**

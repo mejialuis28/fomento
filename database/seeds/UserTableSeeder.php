@@ -102,5 +102,11 @@ class UserTableSeeder extends Seeder{
             'documento' => '8163143',
             'password' => Hash::make('felipe')
         ));
+
+         DB::table('administradores')->insert(array(
+
+            'usuario' => 1,
+            'activo' => 1    
+        ));
     }
 }

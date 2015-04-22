@@ -44,4 +44,5 @@ Route::post('admin/administradores/buscarusuario', 'AdministradoresController@bu
 
 // Rutas de reservas
 Route::get('reservas/create', 'ReservasController@create');
+Route::post('reservas/buscarItems', 'ReservasController@buscarItems');
 Route::post('reservas/create', 'ReservasController@store');

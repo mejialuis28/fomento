@@ -38,8 +38,14 @@
                         <li><a href="{{url('inventario/create')}}">Nuevo Artículo</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="{{url('prestamos')}}">Préstamos</a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Préstamos <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{url('reservas/create')}}">Nueva Reserva</a></li>
+                        <li><a href="{{url('misreservas')}}">Mis Reservas</a></li>
+                        <li><a href="{{url('reservas')}}">Administrar Reservas</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="{{url('reportes')}}">Reportes</a>
@@ -140,7 +146,7 @@
 @yield('scripts')
 <script type="text/javascript">
     //script para cerrar las alertas.
-    window.setTimeout(function() { $(".alert").alert('close'); }, 5000);
+    window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 </script>
 </body>
 </html>
