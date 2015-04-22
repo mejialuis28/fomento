@@ -33,7 +33,7 @@ class ReservasController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('reservas.create');
 	}
 
 	/**
