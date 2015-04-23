@@ -3,7 +3,9 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Categoria;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use App\Inventario;
 
 class ReservasController extends Controller {
 
@@ -36,6 +38,15 @@ class ReservasController extends Controller {
 		$categorias = Categoria::where('activo', '=', true)->get();
 		return view('reservas.create', compact('categorias'));
 	}
+
+
+    public function buscaritems()
+    {
+        $desc = Input::get('desc');
+        $categoria = Input::get('cat');
+        $inventario = Inventario::Activo()->Descrip($desc)->Cat($categoria)->HabilitadosPrestamo()->get();
+        return view('reservas.buscar_items', compact('inventario'));
+    }
 
 	/**
 	 * Store a newly created resource in storage.

@@ -140,4 +140,16 @@ class Inventario extends Model {
         return $query->where('activo', '=', true);
     }
 
+    /**
+     * Método personalizado para agregar un where sobre el habilitado prestramo.
+     *
+     * @param $query
+     * @return $query actualizado.
+     */
+    public function scopeHabilitadosPrestamo($query)
+    {
+        return $query->where('habilitadoPrestamo', '=', true);
+    }
+
+
 }

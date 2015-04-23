@@ -115,14 +115,14 @@
                             </div>
                             <label for="txtCat" class="control-label col-md-2">Descripción</label>
                             <div class="col-md-3">
-                                <input id="txtDesc" type="text" name="descripcion" class="form-control" />
+                                <input id="txtDesc" type="text" name="desc" class="form-control" />
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Buscar</button>
                             </div>
                         {!! Form::close()!!}
                     </div>
-                    <div id="result">
+                    <div id="result" style="margin-top: 10px;">
 
                     </div>
 
@@ -162,6 +162,10 @@
             });
             // Inicializa date picker para la fecha de reserva.
             $('#txtFecha').datepicker();
+
+            $('#mdlNuevo').on('hidden.bs.modal', function () {
+                $('#result').html('');
+            });
 
             $("#frmBuscar").submit(function() {
                 
