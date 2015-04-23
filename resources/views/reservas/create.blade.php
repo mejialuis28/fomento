@@ -11,7 +11,7 @@
             <h4 class="panel-title">Nueva reserva</h4>
         </div>
         <div class="panel-body">
-            <form method="POST" class="form-horizontal" action="create">
+            <form id="frmGeneral" method="POST" class="form-horizontal" action="create">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <fieldset>
@@ -56,41 +56,41 @@
                             </div>
                         </div>
                     </div>
-                     <hr>
-                    <div>
-                        <h5 class="text-center"><strong>Listado de artículos de la reserva</strong></h5>
-
-                        <div >
-                            <button class="btn btn-default" onclick="abrirModalNuevo(); return false;"><i class="glyphicon glyphicon-plus"></i> Nuevo item</button>
-                        </div>
-                        </br>
-                        <table class="table table-condensed table-bordered">
-                            <thead>
-                            <tr class="success">
-                                <th>Placa</th>
-                                <th>Descripción</th>
-                                <th>Categoria</th>
-                                <th>Estado</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                        <div >
-                            <button class="btn btn-default" onclick="abrirModalNuevo(); return false;"><i class="glyphicon glyphicon-plus"></i> Nuevo item</button>
-                        </div>
-                    </div>                    
-                    <hr>
-                    <div>
-                        <div class="text-center">
-                            <button class="btn btn-default"><i class="glyphicon glyphicon-floppy-disk"></i> Enviar</button>
-                            <a href="{{Url('misreservas')}}" class="btn btn-red"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
-                        </div>
-                    </div>
                 </fieldset>
             </form>
+            <hr>
+            <div>
+                <h5 class="text-center"><strong>Listado de artículos de la reserva</strong></h5>
+
+                <div >
+                    <button class="btn btn-default" onclick="abrirModalNuevo();"><i class="glyphicon glyphicon-plus"></i> Nuevo item</button>
+                </div>
+                </br>
+                <table id='tblItems' class="table table-condensed table-bordered">
+                    <thead>
+                    <tr class="success">
+                        <th>Placa</th>
+                        <th>Descripción</th>
+                        <th>Categoria</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <div >
+                    <button class="btn btn-default" onclick="abrirModalNuevo();"><i class="glyphicon glyphicon-plus"></i> Nuevo item</button>
+                </div>
+            </div>                    
+            <hr>
+            <div>
+                <div class="text-center">
+                    <button class="btn btn-default" onclick="$('#frmGeneral').submit()"><i class="glyphicon glyphicon-floppy-disk"></i> Enviar</button>
+                    <a href="{{Url('misreservas')}}" class="btn btn-red"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
+                </div>
+            </div>                
         </div>
     </div> 
 
@@ -122,7 +122,7 @@
                             </div>
                         {!! Form::close()!!}
                     </div>
-                    <div id="result" style="margin-top: 10px;">
+                    <div id="result" style="padding-top: 30px;">
 
                     </div>
 
@@ -144,9 +144,8 @@
 
     <script type="text/javascript">
 
-
+        // Array de items asociados a la reserva.
         var items = null;
-
 
         $(document).ready(function() {
             // Inicializa items con un array vacío
@@ -183,12 +182,87 @@
                 });
                 return false;
             });
+
+             $("#frmGeneral").submit(function() {                
+                 $('<input />').attr('type', 'hidden')
+                  .attr('name', 'items')
+                  .attr('value', JSON.stringify(items))
+                  .appendTo('#frmGeneral');
+                return true;
+            });
         });
 
         function abrirModalNuevo() {
             $('#mdlNuevo').appendTo("body").modal('show');
             return false;
         }    
+
+        function Item(id, placa, desc, cat, est){
+            this.id = id;
+            this.placa = placa;
+            this.descripcion = desc;
+            this.categoria = cat;
+            this.estado = est;
+        }
+
+        function InsertarItem(nuevoItem)
+        {
+            //Insertar item
+            var tabla = document.getElementById('tblItems').getElementsByTagName('tbody')[0];        
+            var nuevaFila  = tabla.insertRow(tabla.rows.length);
+            var nuevaCelda  = nuevaFila.insertCell(0);
+            var texto  = document.createTextNode(nuevoItem.placa);
+            nuevaCelda.appendChild(texto);
+
+            nuevaCelda  = nuevaFila.insertCell(1);
+            texto  = document.createTextNode(nuevoItem.descripcion);
+            nuevaCelda.appendChild(texto);
+
+            nuevaCelda  = nuevaFila.insertCell(2);
+            texto  = document.createTextNode(nuevoItem.categoria);
+            nuevaCelda.appendChild(texto);
+
+            nuevaCelda  = nuevaFila.insertCell(3);
+            texto  = document.createTextNode(nuevoItem.estado);
+            nuevaCelda.appendChild(texto);
+
+            nuevaCelda  = nuevaFila.insertCell(4);
+            boton = document.createElement('button');
+            icono = document.createElement('i');
+            icono.className = 'glyphicon glyphicon-remove';            
+            boton.appendChild(icono);
+            boton.setAttribute('onclick', 'eliminarItemReserva(' + nuevoItem.id + ')');
+            boton.className = 'btn btn-red btn-sm';
+            nuevaCelda.appendChild(boton);
+        }
+
+        function agregarItemReserva(itemId, element) {
+            var tds = $(element).closest('tr').children();
+            var placa = tds[0].innerHTML;
+            var desc = tds[1].innerHTML;
+            var cat = tds[2].innerHTML;
+            var est = tds[3].innerHTML;
+
+            var nuevoItem = new Item(itemId,placa,desc, cat, est);
+            items.push(nuevoItem);
+            InsertarItem(nuevoItem);
+
+            $('#mdlNuevo').modal('hide');
+        }
+
+
+        function eliminarItemReserva(itemId)
+        {
+            items = items.filter(function( obj ) {
+                return obj.id !== itemId;
+            });
+
+            document.getElementById('tblItems').getElementsByTagName('tbody')[0].innerHTML = '';
+            for(i = 0; i < items.length; i++)
+            {
+                InsertarItem(items[i]);
+            }
+        }
 
     </script>
 @endsection

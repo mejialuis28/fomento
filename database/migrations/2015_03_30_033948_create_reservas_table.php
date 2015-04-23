@@ -12,7 +12,20 @@ class CreateReservasTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('reservas', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('responsable')->unsigned();
+            $table->timestamp('fechaInicio');
+            $table->timestamp('fechaFin');
+            $table->string('comentarios');
+            $table->string('estado');                                  
+            $table->timestamps();
+
+            $table->foreign('responsable')
+                ->references('id')
+                ->on('users');
+        });
 	}
 
 	/**

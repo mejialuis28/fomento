@@ -17,7 +17,7 @@
             <td>{{ $item->cat->nombre}}</td>
             <td>{{ $item->est->nombre}}</td>
             <td class="text-center">
-                <button class="btn btn-primary btn-sm" onclick="agregarItemReserva({{$item->id}})"><i class="glyphicon glyphicon-check"></i></button>
+                <button class="btn btn-primary btn-sm" onclick="agregarItemReserva({{$item->id}}, this)"><i class="glyphicon glyphicon-check"></i></button>
             </td>
         </tr>
         @endforeach

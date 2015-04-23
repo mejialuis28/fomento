@@ -55,7 +55,9 @@ class ReservasController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		//dd(Input::all());
+		$items = json_decode(Input::get('items'));
+ 		dd($someArray[0]->descripcion);
 	}
 
 	/**

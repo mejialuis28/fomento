@@ -42,7 +42,6 @@ class Administrador extends Model {
      */
     public $timestamps = false;
 
-
     /**
      * Se especifica cual columna es la llave primaria debido a que laravel asume que es id.
      *
