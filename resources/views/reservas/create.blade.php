@@ -31,18 +31,18 @@
                         <div class="form-group">
                             <label for="txtFecha" class="col-md-2 control-label">Fecha reserva</label>
                             <div class="col-md-4">
-                                <input id="txtFecha" name="fechaIngreso" data-date-format="dd/mm/yyyy" class="form-control" required type="text" placeholder=" dd/mm/aaaa"/>
+                                <input id="txtFecha" name="fecha" data-date-format="dd/mm/yyyy" class="form-control" required type="text" placeholder=" dd/mm/aaaa"/>
                             </div>
                             <label  class="col-md-2 control-label">Hora inicial y final</label>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaIni" type="text" class="form-control" />
+                                    <input id="horaIni" name="horaIni" type="text" class="form-control" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaFin" type="text" class="form-control" />
+                                    <input id="horaFin" name="horaFin" type="text" class="form-control" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
@@ -258,7 +258,7 @@
             });
 
             document.getElementById('tblItems').getElementsByTagName('tbody')[0].innerHTML = '';
-            for(i = 0; i < items.length; i++)
+            for(var i = 0; i < items.length; i++)
             {
                 InsertarItem(items[i]);
             }
