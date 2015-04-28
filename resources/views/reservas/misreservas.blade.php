@@ -26,24 +26,25 @@
                         <table class="table table-condensed table-bordered">
                             <thead>
                             <tr class="success">
+                                <th>Código</th>
                                 <th>Responsable</th>
                                 <th>Documento</th>
                                 <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Comentarios</th>
+                                <th>Fecha Fin</th>                                
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($reservas as $reserva)
                                 <tr>
+                                    <td>{{ $reserva->id }}</td> 
                                     <td>{{ $reserva->user->nombres }} {{ $reserva->user->apellidos }}</td>
                                     <td>{{ $reserva->user->documento }}</td>
                                     <td>{{ $reserva->fechaInicio }}</td>
-                                    <td>{{ $reserva->fechaFin }}</td>
-                                    <td>{{ $reserva->comentarios }}</td>
+                                    <td>{{ $reserva->fechaFin }}</td>                                    
                                     <td class="text-center">
-
+                                        <button onclick="verDetalle('{{url('reservas/misreservas/details')}}/{{ $item->id }}')" class="btn btn-grey btn-sm"><i class="glyphicon glyphicon-list"></i></button>
+                                        <button onclick="cancelarReserva(this)" class="btn btn-red btn-sm" data-cancel-id="{{$reserva->id}}"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -75,8 +76,74 @@
 
     </div>
 
+     <!-- Modal -->
+    <div class="modal fade" id="mdlDetalle" tabindex="-1" role="dialog" aria-labelledby="mdlTitulo" aria-hidden="true">
+        <div id="dialogo" class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="mdlTitulo">Detalle de reserva</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="result">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-red" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
+ <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#mdlDetalle').on('hidden.bs.modal', function () {
+                $('#result').html('');
+            });
+        });
+        function verDetalle(url) {
+            $.ajax({
+                url: url,
+                error: function () {
+                    $('#result').html("<p class='bg-danger'>Se presentó un error al consultar la información. Cierre la ventana e intente nuevamente.</p>");
+                },
+                success: function (data) {
+                    $('#result').html(data);
+                }
+            });
+            $('#mdlDetalle').appendTo("body").modal('show');
+        }
+        
+
+        function cancelarReserva(element){
+            var cancelId = element.getAttribute('data-cancel-id');
+            if(confirm('¿Está seguro de cancelar la reserva?'))
+            {
+                var form =
+                        $('<form>', {
+                            'method': 'POST',
+                            'action': "{{url('reservas/misreservas/cancelar')}}" + '/' + cancelId
+                        });
+                var token =
+                        $('<input>', {
+                            'type': 'hidden',
+                            'name': '_token',
+                            'value': '{{csrf_token()}}'
+                        });
+                var method =
+                    $('<input>', {
+                        'name': '_method',
+                        'type': 'hidden',
+                        'value': 'DELETE'
+                    });
+                form.append(token, method).appendTo('body');
+                form.submit();
+            }
+        }
+    </script>
 
 @endsection
