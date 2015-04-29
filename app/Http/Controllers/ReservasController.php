@@ -138,7 +138,9 @@ class ReservasController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$reserva = Reserva::findOrFail($id);
+        $reserva->update(array('estado' => EstadoReserva::CANCELADA));
+        return redirect('reservas/misreservas')->with(array('mensaje' => 'Se ha cancelado correctamente la reserva.', 'tipo' => 'success'));;
 	}
 
 
