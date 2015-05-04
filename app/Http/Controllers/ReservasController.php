@@ -97,6 +97,24 @@ class ReservasController extends Controller {
             ->with(array('mensaje' => 'Se ha registrado correctamente la reserva', 'tipo' => 'success'));
 	}
 
+    /**
+     * Muestra el detalle de una reserva.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function details($id)
+    {
+        $reserva = Reserva::find($id);
+        $comentarios = $reserva->comentarios;
+        $detallesReserva = DetalleReserva::where('idReserva', '=', $id)->get();
+        $items = array();
+        foreach ($detallesReserva as $detalle) {
+            $items[] = $detalle->item;
+        }
+        return view('reservas.detalle_reserva', compact('comentarios', 'items'));
+    }
+
 	/**
 	 * Display the specified resource.
 	 *

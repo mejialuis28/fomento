@@ -72,5 +72,6 @@ abstract class EstadoReserva
     const EJECUTADA = 'Ejecutada';
     const RECHAZADA = 'Rechazada';
     const EXPIRADA = 'Expirada';
+    const CANCELADA = 'Cancelada';
     // etc.
 }

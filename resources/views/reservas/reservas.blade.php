@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('css')
-  
+
 @endsection
 
 @section('content')
@@ -31,14 +31,14 @@
                                 <th>Documento</th>
                                 <th>Fecha Reserva</th>
                                 <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>                                
+                                <th>Fecha Fin</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($reservas as $reserva)
                                 <tr>
-                                    <td>{{ $reserva->id }}</td> 
+                                    <td>{{ $reserva->id }}</td>
                                     <td>{{ $reserva->user->nombres }} {{ $reserva->user->apellidos }}</td>
                                     <td>{{ $reserva->user->documento }}</td>
                                     <td>{{ $reserva->created_at->format('d/m/Y h:i A') }}</td>
@@ -78,10 +78,10 @@
 
     </div>
 
-     <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="mdlDetalle" tabindex="-1" role="dialog" aria-labelledby="mdlTitulo" aria-hidden="true">
         <div id="dialogo" class="modal-dialog">
-             <div class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h5 class="modal-title" id="mdlTitulo">Detalle de reserva</h5>
@@ -101,7 +101,7 @@
 @endsection
 
 @section('scripts')
- <script type="text/javascript">
+    <script type="text/javascript">
         $( document ).ready(function() {
             $('#mdlDetalle').on('hidden.bs.modal', function () {
                 $('#result').html('');
@@ -119,7 +119,7 @@
             });
             $('#mdlDetalle').appendTo("body").modal('show');
         }
-        
+
 
         function cancelarReserva(element){
             var cancelId = element.getAttribute('data-cancel-id');
@@ -137,11 +137,11 @@
                             'value': '{{csrf_token()}}'
                         });
                 var method =
-                    $('<input>', {
-                        'name': '_method',
-                        'type': 'hidden',
-                        'value': 'DELETE'
-                    });
+                        $('<input>', {
+                            'name': '_method',
+                            'type': 'hidden',
+                            'value': 'DELETE'
+                        });
                 form.append(token, method).appendTo('body');
                 form.submit();
             }

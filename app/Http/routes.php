@@ -46,5 +46,6 @@ Route::post('admin/administradores/buscarusuario', 'AdministradoresController@bu
 Route::get('reservas/create', 'ReservasController@create');
 Route::post('reservas/buscaritems', 'ReservasController@buscaritems');
 Route::post('reservas/create', 'ReservasController@store');
+Route::get('reservas/misreservas/', 'ReservasController@misreservas');
 Route::get('reservas/misreservas/details/{id}','ReservasController@details');
-Route::get('reservas/misreservas/cancelar/{id}','ReservasController@destroy');
+Route::delete('reservas/misreservas/cancelar/{id}','ReservasController@destroy');

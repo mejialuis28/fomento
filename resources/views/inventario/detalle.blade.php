@@ -25,7 +25,6 @@
                             <td>{{$inventario->cat->nombre}}</td>
                         </tr>
                         <tr>
-                        <tr>
                             <td>Valor:</td>
                             <td>{{$inventario->valor}}</td>
                         </tr>
@@ -37,10 +36,15 @@
                             <td>Estado:</td>
                             <td>{{$inventario->est->nombre}}</td>
                         </tr>
+                        <tr>
+                            <td>Fecha Ingreso:</td>
+                            <td>{{$inventario->fechaIngreso}}</td>
+                        </tr>
+                        <tr>
                             <td>Responsable:</td>
                             <td>{{$inventario->user->nombres}}</td>
                         </tr>
-                        </tr>
+                        <tr>
                             <td>Habilitado Préstamo</td>
                             <td>
                                 @if($inventario->habilitadoPrestamo)
