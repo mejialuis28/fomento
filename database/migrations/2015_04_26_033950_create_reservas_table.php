@@ -19,7 +19,8 @@ class CreateReservasTable extends Migration {
             $table->timestamp('fechaInicio');
             $table->timestamp('fechaFin');
             $table->string('comentarios');
-            $table->string('estado');                                  
+            $table->string('estado');
+            $table->string('motivoRechazo', 400)->nullable();
             $table->timestamps();
 
             $table->foreign('responsable')

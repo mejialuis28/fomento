@@ -9,13 +9,15 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#reservas" aria-controls="reservas" role="tab" data-toggle="tab">Reservas</a></li>
-            <li role="presentation"><a href="#prestamos" aria-controls="prestamos" role="tab" data-toggle="tab">Préstamos</a></li>
+            <li role="presentation" class="active"><a href="#reservas" aria-controls="reservas" role="tab" data-toggle="tab">Reservas Activas</a></li>
+            <li role="presentation"><a href="#prestamos" aria-controls="prestamos" role="tab" data-toggle="tab">Historial Reservas</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="reservas">
+
+
                 <div class="panel panel-default">
 
                     <div class="panel-heading">
@@ -46,7 +48,7 @@
                                     <td>{{ $reserva->fechaFin->format('d/m/Y h:i A') }}</td>
                                     <td class="text-center">
                                         <button onclick="verDetalle('{{url('reservas/misreservas/details')}}/{{ $reserva->id }}')" class="btn btn-grey btn-sm"><i class="glyphicon glyphicon-list"></i></button>
-                                        <button onclick="cancelarReserva(this)" class="btn btn-red btn-sm" data-cancel-id="{{$reserva->id}}"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                                        <button onclick="modalRechazo(this)" class="btn btn-red btn-sm" data-rechazo-id="{{$reserva->id}}"><i class="glyphicon glyphicon-remove"></i> Rechazar</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,7 +82,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="mdlDetalle" tabindex="-1" role="dialog" aria-labelledby="mdlTitulo" aria-hidden="true">
-        <div id="dialogo" class="modal-dialog">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -89,6 +91,30 @@
                 <div class="modal-body">
                     <div id="result">
 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-red" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rechazo -->
+    <div class="modal fade" id="mdlRechazo" tabindex="-1" role="dialog" aria-labelledby="mdlTitulo" aria-hidden="true">
+        <div  class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="mdlTitulo">Rechazo de solicitud</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="result">
+                        {!! Form::open(['method' => 'POST', 'url' => '/reservas/rechazar/', 'id' => 'frmRechazo']) !!}
+                        <input type="hidden" name="idReserva" id="idReserva">
+                        <label for="txtMotivo" class="control-label">Motivo del Rechazo</label>
+                        <textarea id="txtMotivo" name="motivo" class="form-control" required/>
+                        {!! Form::close()!!}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -120,15 +146,21 @@
             $('#mdlDetalle').appendTo("body").modal('show');
         }
 
+        function modalRechazo(element){
+            var rechazoId = element.getAttribute('data-rechazo-id');
+            $('idRechazo').val(rechazoId);
+            $('#mdlRechazo').show();
+        }
 
-        function cancelarReserva(element){
+
+        function rechazarReserva(element){
             var cancelId = element.getAttribute('data-cancel-id');
             if(confirm('¿Está seguro de cancelar la reserva?'))
             {
                 var form =
                         $('<form>', {
                             'method': 'POST',
-                            'action': "{{url('reservas/misreservas/cancelar')}}" + '/' + cancelId
+                            'action': "{{url('reservas/rechazar')}}" + '/' + cancelId
                         });
                 var token =
                         $('<input>', {
