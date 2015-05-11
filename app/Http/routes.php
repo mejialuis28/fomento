@@ -49,3 +49,15 @@ Route::post('reservas/create', 'ReservasController@store');
 Route::get('reservas/misreservas/', 'ReservasController@misreservas');
 Route::get('reservas/misreservas/details/{id}','ReservasController@details');
 Route::delete('reservas/misreservas/cancelar/{id}','ReservasController@destroy');
+Route::get('reservas','ReservasController@index');
+Route::post('reservas/rechazar','ReservasController@rechazar');
+
+// Rutas de préstamos
+Route::get('prestamos', 'PrestamosController@index');
+Route::get('prestamos/create', 'PrestamosController@create');
+Route::post('prestamos/create', 'PrestamosController@store');
+Route::get('prestamos/devolucion', 'PrestamosController@devolucion');
+Route::post('prestamos/devolucion', 'PrestamosController@devolver');
+Route::get('prestamos/details/{id}','PrestamosController@details');
+Route::get('prestamos/nuevo', 'PrestamosController@nuevo');
+Route::post('prestamos/nuevo', 'PrestamosController@guardar');

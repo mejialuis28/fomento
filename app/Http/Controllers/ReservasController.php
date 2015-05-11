@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Categoria;
 use App\Reserva;
+use App\Prestamo;
 use Illuminate\Support\Facades\Input;
 use App\Inventario;
 use Illuminate\Http\Request;
@@ -30,7 +31,10 @@ class ReservasController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$reservas = Reserva::oldest('fechaInicio')->Creadas()->paginate(10);
+        $historial = Reserva::latest('updated_at')->where('estado', '!=', EstadoReserva::CREADA)->paginate(10)->setPageName("pageh");
+
+        return view('reservas.reservas', compact('reservas', 'historial'));
 	}
 
 	/**
@@ -51,8 +55,9 @@ class ReservasController extends Controller {
      */
     public function misreservas()
     {
-        $reservas = Reserva::Creadas()->get();
-        return view('reservas.misreservas', compact('reservas'));
+        $reservas = Reserva::where('responsable', '=', Auth::user()->id)->SinEjecutar()->latest('created_at')->get();
+        $prestamos = Prestamo::where('responsable', '=', Auth::user()->id)->latest('created_at')->get();
+        return view('reservas.misreservas', compact('reservas', 'prestamos'));
     }
 
     public function buscaritems()
@@ -106,47 +111,13 @@ class ReservasController extends Controller {
     public function details($id)
     {
         $reserva = Reserva::find($id);
-        $comentarios = $reserva->comentarios;
         $detallesReserva = DetalleReserva::where('idReserva', '=', $id)->get();
         $items = array();
         foreach ($detallesReserva as $detalle) {
             $items[] = $detalle->item;
         }
-        return view('reservas.detalle_reserva', compact('comentarios', 'items'));
+        return view('reservas.detalle_reserva', compact('reserva', 'items'));
     }
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
 
 	/**
 	 * Remove the specified resource from storage.
@@ -161,6 +132,20 @@ class ReservasController extends Controller {
         return redirect('reservas/misreservas')->with(array('mensaje' => 'Se ha cancelado correctamente la reserva.', 'tipo' => 'success'));;
 	}
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function rechazar()
+    {
+        $id = Input::get('idReserva');
+        $motivo = Input::get('motivo');
+        $reserva = Reserva::findOrFail($id);
+        $reserva->update(array('estado' => EstadoReserva::RECHAZADA, 'motivo'));
+        return redirect('reservas')->with(array('mensaje' => 'Se ha rechazado correctamente la reserva.', 'tipo' => 'success'));;
+    }
 
     private function formatearFecha($fecha, $hora)
     {

@@ -30,39 +30,14 @@
         <nav id="mainmenu" class="mainmenu">
             <ul>
                 <li class="logo-wrapper"><a href="{{url('/')}}"><img src="{{asset('img/escudo.jpg')}}" alt="Politecnico Colombiano JIC"></a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        Inventario <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{url('inventario')}}">Administrar Inventario</a></li>
-                        <li><a href="{{url('inventario/create')}}">Nuevo Artículo</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        Préstamos <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{url('reservas/create')}}">Nueva Reserva</a></li>
-                        <li><a href="{{url('reservas/misreservas')}}">Mis Reservas</a></li>
-                        <li><a href="{{url('reservas')}}">Administrar Reservas</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{url('reportes')}}">Reportes</a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        Admin <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{url('admin/administradores')}}">Administradores</a></li>
-                        <li><a href="{{url('admin/categorias')}}">Categorias</a></li>
-                        <li><a href="{{url('admin/estados')}}">Estados Artículos</a></li>
-                    </ul>
-                </li>
-
                 @if (Auth::guest())
                     <li><a href="{{url('login')}}">Ingresar</a></li>
                 @else
+                    @if(Auth::user()->admin)
+                        @include('_navAdmin')
+                    @else
+                        @include('_navUser')
+                    @endif
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <strong>{{ Auth::user()->tipo->nombre }}: </strong> {{ Auth::user()->nombres }} <span class="caret"></span></a>

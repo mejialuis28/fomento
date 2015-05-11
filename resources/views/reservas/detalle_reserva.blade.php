@@ -1,11 +1,4 @@
 <div class="panel panel-default">
-    <div class="panel-heading">Comentarios</div>
-    <div class="panel-body">
-        {{ $comentarios }}
-    </div>
-</div>
-
-<div class="panel panel-default">
     <div class="panel-heading">Items de la reserva</div>
     <div class="panel-body">
         <table class="table table-condensed table-bordered">
@@ -18,7 +11,6 @@
             </tr>
             </thead>
             <tbody>
-            @if($items)
                 @foreach($items as $item)
                     <tr>
                         <td>{{ $item->placa }}</td>
@@ -27,12 +19,21 @@
                         <td>{{ $item->est->nombre}}</td>
                     </tr>
                 @endforeach
-            @else
-                <tr>
-                    <td colspan="3">No existen items con los criterios de búsqueda.</td>
-                </tr>
-            @endif
             </tbody>
         </table>
     </div>
 </div>
+<div class="panel panel-default">
+    <div class="panel-heading">Comentarios</div>
+    <div class="panel-body">
+        {{ $reserva->comentarios }}
+    </div>
+</div>
+@if($reserva->motivoRechazo)
+<div class="panel panel-danger">
+    <div class="panel-heading">Motivo Rechazo</div>
+    <div class="panel-body">
+        {{ $reserva->motivoRechazo }}
+    </div>
+</div>
+@endif

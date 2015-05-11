@@ -23,30 +23,34 @@
                     </div>
 
                     <div class="panel-body">
+                        <div class="form-group">
+                            <a class="btn btn-primary" href="{{ url('reservas/create') }}"><i class="glyphicon glyphicon-plus"></i> Nueva reserva</a>
+                        </div>
+
                         <table class="table table-condensed table-bordered">
                             <thead>
                             <tr class="success">
                                 <th>Código</th>
-                                <th>Responsable</th>
-                                <th>Documento</th>
                                 <th>Fecha Reserva</th>
                                 <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>                                
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($reservas as $reserva)
                                 <tr>
-                                    <td>{{ $reserva->id }}</td> 
-                                    <td>{{ $reserva->user->nombres }} {{ $reserva->user->apellidos }}</td>
-                                    <td>{{ $reserva->user->documento }}</td>
+                                    <td>{{ $reserva->id }}</td>
                                     <td>{{ $reserva->created_at->format('d/m/Y h:i A') }}</td>
                                     <td>{{ $reserva->fechaInicio->format('d/m/Y h:i A') }}</td>
                                     <td>{{ $reserva->fechaFin->format('d/m/Y h:i A') }}</td>
+                                    <td>{{ $reserva->estado }}</td>
                                     <td class="text-center">
                                         <button onclick="verDetalle('{{url('reservas/misreservas/details')}}/{{ $reserva->id }}')" class="btn btn-grey btn-sm"><i class="glyphicon glyphicon-list"></i></button>
-                                        <button onclick="cancelarReserva(this)" class="btn btn-red btn-sm" data-cancel-id="{{$reserva->id}}"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                                        @if($reserva->estado == 'Creada')
+                                            <button onclick="cancelarReserva(this)" class="btn btn-red btn-sm" data-cancel-id="{{$reserva->id}}"><i class="glyphicon glyphicon-remove"></i></button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -110,6 +114,7 @@
         function verDetalle(url) {
             $.ajax({
                 url: url,
+                type: 'GET',
                 error: function () {
                     $('#result').html("<p class='bg-danger'>Se presentó un error al consultar la información. Cierre la ventana e intente nuevamente.</p>");
                 },

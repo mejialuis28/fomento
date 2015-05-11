@@ -3,28 +3,28 @@
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Reserva extends Model {
+class Prestamo extends Model {
 
 	/**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'reservas';
+    protected $table = 'prestamos';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['responsable','fechaInicio','fechaFin','comentarios','estado'];
+    protected $fillable = ['idReserva','responsable','fechaInicio','fechaFin','fechaEntrega','fechaDevolucion','estado', 'observacionesEntrega','entregadoPor','recibidoPor', 'observacionesDevolucion'];
 
     /**
      * The attributes treated as a carbon instance.
      *
      * @var array
      */
-    protected $dates = ['fechaInicio', 'fechaFin'];
+    protected $dates = ['fechaInicio', 'fechaFin', 'fechaEntrega', 'fechaDevolucion'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -45,14 +45,14 @@ class Reserva extends Model {
     }
 
     /**
-     * Método personalizado para agregar un where sobre el campo Estaod.
+     * Método personalizado para agregar un where sobre el campo Estado.
      *
      * @param $query
      * @return $query actualizado.
      */
-    public function scopeCreadas($query)
+    public function scopePrestados($query)
     {
-        return $query->where('estado', '=', EstadoReserva::CREADA);
+        return $query->where('estado', '=', EstadoPrestamo::PRESTADO);
     }
 
     /**
@@ -61,9 +61,9 @@ class Reserva extends Model {
      * @param $query
      * @return $query actualizado.
      */
-    public function scopeSinEjecutar($query)
+    public function scopeDevueltos($query)
     {
-        return $query->whereIn('estado', array(EstadoReserva::CREADA, EstadoReserva::CANCELADA, EstadoReserva::RECHAZADA, EstadoReserva::EXPIRADA));
+        return $query->where('estado', '=', EstadoPrestamo::DEVUELTO);
     }
 
     /**
@@ -77,21 +77,38 @@ class Reserva extends Model {
     }
 
     /**
+     * Retorna el usuario responsable de entregar el préstamo.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function entrego()
+    {
+        return $this->belongsTo('App\User', 'entregadoPor');
+    }
+
+    /**
+     * Retorna el usuario responsable de recibir el prestamo.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function recibio()
+    {
+        return $this->belongsTo('App\User', 'recibidoPor');
+    }
+
+    /**
      * Retorna el usuario responsable del articulo.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function items()
     {
-        return $this->hasMany('App\DetalleReserva','idReserva');
+        return $this->hasMany('App\DetallePrestamo','idPrestamo');
     }
 }
 
-abstract class EstadoReserva
+abstract class EstadoPrestamo
 {
-    const CREADA = 'Creada';
-    const EJECUTADA = 'Ejecutada';
-    const RECHAZADA = 'Rechazada';
-    const EXPIRADA = 'Expirada';
-    const CANCELADA = 'Cancelada';
+    const PRESTADO = 'Prestado';
+    const DEVUELTO = 'Devuelto';
 }
