@@ -34,7 +34,11 @@
                     <li><a href="{{url('login')}}">Ingresar</a></li>
                 @else
                     @if(Auth::user()->admin)
-                        @include('_navAdmin')
+                        @if(Auth::user()->admin->activo)
+                            @include('_navAdmin')
+                        @else
+                            @include('_navUser')
+                        @endif
                     @else
                         @include('_navUser')
                     @endif
@@ -46,10 +50,7 @@
                         </ul>
                     </li>
                 @endif
-
             </ul>
-
-
         </nav>
     </div>
 </div>

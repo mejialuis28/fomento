@@ -17,7 +17,7 @@ class Prestamo extends Model {
      *
      * @var array
      */
-    protected $fillable = ['idReserva','responsable','fechaInicio','fechaFin','fechaEntrega','fechaDevolucion','estado', 'observacionesEntrega','entregadoPor','recibidoPor', 'observacionesDevolucion'];
+    protected $fillable = ['idReserva','responsable','fechaInicio','fechaFin','fechaEntrega','fechaDevolucion','estado', 'observacionesEntrega','entregadoPor','recibidoPor', 'observacionesDevolucion','notificadoRetraso'];
 
     /**
      * The attributes treated as a carbon instance.

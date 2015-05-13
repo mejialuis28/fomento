@@ -14,6 +14,7 @@ Route::get('/', 'InicioController@index');
 Route::get('login', 'InicioController@login');
 Route::post('login', 'InicioController@autenticar');
 Route::get('logout', 'InicioController@logout');
+Route::get('enviarmail','InicioController@enviarmail');
 
 // Rutas del inventario
 Route::get('inventario', 'InventarioController@index');
@@ -61,3 +62,6 @@ Route::post('prestamos/devolucion', 'PrestamosController@devolver');
 Route::get('prestamos/details/{id}','PrestamosController@details');
 Route::get('prestamos/nuevo', 'PrestamosController@nuevo');
 Route::post('prestamos/nuevo', 'PrestamosController@guardar');
+Route::post('prestamos/buscarresponsable', 'PrestamosController@buscarResponsable');
+
+

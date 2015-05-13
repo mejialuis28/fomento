@@ -14,7 +14,7 @@ class CreateDetalleprestamosTable extends Migration {
 	{
         Schema::create('detalleprestamos', function(Blueprint $table)
         {
-            $table->increments('idPrestamo');
+            $table->integer('idPrestamo')->unsigned();
             $table->integer('idInventario')->unsigned();
             $table->integer('estadoEntrega')->unsigned();
             $table->integer('estadoDevolucion')->unsigned()->nullable();

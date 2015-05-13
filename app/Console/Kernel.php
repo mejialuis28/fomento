@@ -12,6 +12,9 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'App\Console\Commands\Inspire',
+        'App\Console\Commands\DevolucionRetrasada',
+        'App\Console\Commands\DevolucionesRetrasadasDiario',
+        'App\Console\Commands\ReservasDia',
 	];
 
 	/**
@@ -22,8 +25,11 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('inspire')
-				 ->hourly();
+		$schedule->command('inspire')->hourly();
+        $schedule->command('DevolucionRetrasada')->everyFiveMinutes();
+        $schedule->command('DevolucionesRetrasadasDiario')->dailyAt('06:00');
+        $schedule->command('ReservasDia')->dailyAt('06:05');
+
 	}
 
 }

@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => null, 'name' => null],
+	'from' => ['address' => 'postmaster@sandbox148eb83f18c143378baa4172a9b62c36.mailgun.org', 'name' => 'Fomento Cultural'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
 	|
 	*/
 
-	'username' => null,
+	'username' => 'postmaster@sandbox148eb83f18c143378baa4172a9b62c36.mailgun.org',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
 	|
 	*/
 
-	'password' => null,
+	'password' => '35c2f34be236b9f00b07813afbf56947',
 
 	/*
 	|--------------------------------------------------------------------------

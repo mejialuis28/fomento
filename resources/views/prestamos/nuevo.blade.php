@@ -16,21 +16,25 @@
                 <fieldset>
                     <div>
                         <div class="form-group">
+                            <input id="resp" name="responsable" type="hidden" class="form-control" />
                             <label for="txtResp" class="col-md-2 control-label">Responsable</label>
                             <div class="col-md-4">
-                                <input id="txtResp" name="responsable" class="form-control" type="text" value="{{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}" disabled />
+                                <div class="input-group bootstrap-timepicker">
+                                    <input id="txtResp" name="txtResponsable" type="text" class="form-control" required disabled/>
+                                    <span class="input-group-btn"><button class="btn btn-default" onclick="abrirModalResponsable()"><i class="glyphicon glyphicon-plus"></i></button></span>
+                                </div>
                             </div>
-                            <label for="txtDescripcion" class="col-md-2 control-label">Documento</label>
+                            <label for="txtDoc" class="col-md-2 control-label">Documento</label>
                             <div class="col-md-4">
-                                <input id="txtDocumento" name="documento" class="form-control" value="{{ Auth::user()->documento }}" type="text" disabled />
+                                <input id="txtDoc" name="documento" class="form-control" type="text" disabled/>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div class="form-group">
-                            <label for="txtFecha" class="col-md-2 control-label">Fecha reserva</label>
+                            <label for="txtFecha" class="col-md-2 control-label">Fecha Prestamo</label>
                             <div class="col-md-4">
-                                <input id="txtFecha" name="fecha" data-date-format="dd/mm/yyyy" class="form-control" required type="text" placeholder=" dd/mm/aaaa"/>
+                                <input id="txtFecha" name="fecha" data-date-format="dd/mm/yyyy" class="form-control" required type="text" value="{{ $fecha->format('d/m/Y') }}" readonly/>
                             </div>
                             <label  class="col-md-2 control-label">Hora inicial y final</label>
                             <div class="col-md-2">
@@ -49,9 +53,25 @@
                     </div>
                     <div>
                         <div class="form-group">
-                            <label for="txtComentario" class="col-md-2 control-label">Comentarios</label>
+                            <label for="txtComentario" class="col-md-2 control-label">Comentarios Entrega</label>
                             <div class="col-md-10">
-                                <textarea id="txtComentario" rows="3" name="comentarios" required class="form-control" placeholder="Comentarios"></textarea>
+                                <textarea id="txtComentario" rows="3" name="observacionesEntrega" required class="form-control" placeholder="Observaciones Entrega"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="entregadoPor" class="col-md-2 control-label">Entregado Por:</label>
+                            <div class="col-md-4">
+                                <select id="entregadoPor" name="entregadoPor" class="form-control">
+                                    @foreach($administradores as $admin)
+                                        @if($admin->user->id == Auth::user()->id)
+                                            <option value="{{ $admin->user->id }}" selected>{{ $admin->user->nombres }} {{ $admin->user->apellidos }}</option>
+                                        @else
+                                            <option value="{{ $admin->user->id }}">{{ $admin->user->nombres }} {{ $admin->user->apellidos }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -59,7 +79,7 @@
             </form>
             <hr>
             <div>
-                <h5 class="text-center"><strong>Listado de artículos de la reserva</strong></h5>
+                <h5 class="text-center"><strong>Listado de artículos del préstamo</strong></h5>
 
                 <div >
                     <button class="btn btn-default" onclick="abrirModalNuevo();"><i class="glyphicon glyphicon-plus"></i> Nuevo item</button>
@@ -87,7 +107,7 @@
             <div>
                 <div class="text-center">
                     <button class="btn btn-default" onclick="$('#frmGeneral').submit()"><i class="glyphicon glyphicon-floppy-disk"></i> Enviar</button>
-                    <a href="{{Url('misreservas')}}" class="btn btn-red"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
+                    <a href="{{Url('prestamos')}}" class="btn btn-red"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
                 </div>
             </div>
         </div>
@@ -98,7 +118,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h5 class="modal-title" id="mdlTitulo">Agregar item a reserva</h5>
+                    <h5 class="modal-title" id="mdlTitulo">Agregar item a préstamo</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -133,6 +153,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="mdlResponsable" tabindex="-1" role="dialog" aria-labelledby="mdlTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="mdlTitle">Seleccionar Responsable</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        {!! Form::open(['id' => 'frmBuscarResponsable']) !!}
+                        <label for="txtDocumento" class="control-label col-md-2">Documento</label>
+                        <div class="col-md-7">
+                            <input id="txtDocumento" type="text" name="documento" placeholder="Ingrese un número de documento" class="form-control" required/>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Buscar</button>
+                        </div>
+                        {!! Form::close()!!}
+                    </div>
+                    <div id="resultado">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-red" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -156,15 +207,17 @@
             $('#horaFin').timepicker({
                 showInputs : false
             });
-            // Inicializa date picker para la fecha de reserva.
-            $('#txtFecha').datepicker();
 
             $('#mdlNuevo').on('hidden.bs.modal', function () {
                 $('#result').html('');
             });
 
-            $("#frmBuscar").submit(function() {
+            $('#mdlResponsable').on('hidden.bs.modal', function () {
+                $('#txtDocumento').val('');
+                $('#resultado').html('');
+            });
 
+            $("#frmBuscar").submit(function() {
                 $.ajax({
                     url: '{{url('reservas/buscaritems')}}',
                     type: 'POST',
@@ -175,6 +228,22 @@
                     },
                     success: function (data) {
                         $('#result').html(data);
+                    }
+                });
+                return false;
+            });
+
+            $("#frmBuscarResponsable").submit(function() {
+                $.ajax({
+                    url: '{{url('prestamos/buscarresponsable')}}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    error: function () {
+                        $('#resultado').html("<div><p class='bg-danger'>" +
+                        "Se presentó un error al consultar la información. Cierre la ventana e intente nuevamente.</p></div>");
+                    },
+                    success: function (data) {
+                        $('#resultado').html(data);
                     }
                 });
                 return false;
@@ -191,6 +260,11 @@
 
         function abrirModalNuevo() {
             $('#mdlNuevo').appendTo("body").modal('show');
+            return false;
+        }
+
+        function abrirModalResponsable() {
+            $('#mdlResponsable').appendTo("body").modal('show');
             return false;
         }
 
@@ -247,7 +321,6 @@
             $('#mdlNuevo').modal('hide');
         }
 
-
         function eliminarItemReserva(itemId)
         {
             items = items.filter(function( obj ) {
@@ -259,6 +332,17 @@
             {
                 InsertarItem(items[i]);
             }
+        }
+
+        function agregarResponsable(elemento)
+        {
+            var idResponsable = elemento.getAttribute('data-responsable-id');
+            var fila = $(elemento).closest('tr');
+            $('#resp').val(idResponsable);
+            $('#txtResp').val(fila.children()[1].innerHTML);
+            $('#txtDoc').val(fila.children()[0].innerHTML);
+
+            $('#mdlResponsable').modal('hide');
         }
 
     </script>

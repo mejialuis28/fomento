@@ -26,6 +26,7 @@ class CreatePrestamosTable extends Migration {
             $table->string('observacionesEntrega', 400)->nullable();
             $table->string('observacionesDevolucion', 400)->nullable();
             $table->string('estado');
+            $table->boolean('notificadoRetraso')->nullable();
             $table->timestamps();
 
             $table->foreign('responsable')

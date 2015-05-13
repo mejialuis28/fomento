@@ -58,6 +58,7 @@
                         </table>
 
                         <div class="text-center">
+                            <?php echo $reservas->appends(Request::except('page'))->render(); ?>
                         </div>
 
                     </div>
@@ -71,8 +72,37 @@
                     </div>
 
                     <div class="panel-body">
+                        <table class="table table-condensed table-bordered">
+                            <thead>
+                            <tr class="success">
+                                <th>Código</th>
+                                <th>Responsable</th>
+                                <th>Documento</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($prestamos as $prestamo)
+                                <tr>
+                                    <td>{{ $prestamo->id }}</td>
+                                    <td>{{ $prestamo->user->nombres }} {{ $prestamo->user->apellidos }}</td>
+                                    <td>{{ $prestamo->user->documento }}</td>
+                                    <td>{{ $prestamo->fechaInicio->format('d/m/Y h:i A') }}</td>
+                                    <td>{{ $prestamo->fechaFin->format('d/m/Y h:i A') }}</td>
+                                    <td>{{ $prestamo->estado }}</td>
+                                    <td class="text-center">
+                                        <button onclick="verDetallePrestamo('{{url('prestamos/details')}}/{{ $prestamo->id }}')" class="btn btn-grey btn-sm"><i class="glyphicon glyphicon-list"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
 
                         <div class="text-center">
+                            <?php echo $prestamos->appends(Request::except('pageh'))->render(); ?>
                         </div>
 
                     </div>
@@ -85,13 +115,33 @@
      <!-- Modal -->
     <div class="modal fade" id="mdlDetalle" tabindex="-1" role="dialog" aria-labelledby="mdlTitulo" aria-hidden="true">
         <div id="dialogo" class="modal-dialog">
-             <div class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h5 class="modal-title" id="mdlTitulo">Detalle de reserva</h5>
                 </div>
                 <div class="modal-body">
                     <div id="result">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-red" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="mdlDetallePrestamo" tabindex="-1" role="dialog" aria-labelledby="mdlTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="mdlTitle">Detalle del préstamo</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="resultado">
 
                     </div>
                 </div>
@@ -110,6 +160,9 @@
             $('#mdlDetalle').on('hidden.bs.modal', function () {
                 $('#result').html('');
             });
+            $('#mdlDetallePrestamo').on('hidden.bs.modal', function () {
+                $('#result').html('');
+            });
         });
         function verDetalle(url) {
             $.ajax({
@@ -124,7 +177,20 @@
             });
             $('#mdlDetalle').appendTo("body").modal('show');
         }
-        
+
+        function verDetallePrestamo(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                error: function () {
+                    $('#resultado').html("<p class='bg-danger'>Se presentó un error al consultar la información. Cierre la ventana e intente nuevamente.</p>");
+                },
+                success: function (data) {
+                    $('#resultado').html(data);
+                }
+            });
+            $('#mdlDetallePrestamo').appendTo("body").modal('show');
+        }
 
         function cancelarReserva(element){
             var cancelId = element.getAttribute('data-cancel-id');

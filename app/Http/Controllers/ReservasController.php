@@ -12,6 +12,7 @@ use App\Inventario;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\DB;
 Use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReservasController extends Controller {
 
@@ -55,8 +56,8 @@ class ReservasController extends Controller {
      */
     public function misreservas()
     {
-        $reservas = Reserva::where('responsable', '=', Auth::user()->id)->SinEjecutar()->latest('created_at')->get();
-        $prestamos = Prestamo::where('responsable', '=', Auth::user()->id)->latest('created_at')->get();
+        $reservas = Reserva::where('responsable', '=', Auth::user()->id)->SinEjecutar()->latest('created_at')->paginate(10);
+        $prestamos = Prestamo::where('responsable', '=', Auth::user()->id)->latest('created_at')->paginate(10)->setPageName('pageh');
         return view('reservas.misreservas', compact('reservas', 'prestamos'));
     }
 
@@ -143,8 +144,16 @@ class ReservasController extends Controller {
         $id = Input::get('idReserva');
         $motivo = Input::get('motivo');
         $reserva = Reserva::findOrFail($id);
-        $reserva->update(array('estado' => EstadoReserva::RECHAZADA, 'motivo'));
-        return redirect('reservas')->with(array('mensaje' => 'Se ha rechazado correctamente la reserva.', 'tipo' => 'success'));;
+        $reserva->update(array('estado' => EstadoReserva::RECHAZADA, 'motivoRechazo' => $motivo));
+
+        $data = array('nombre' => $reserva->user->nombres, 'numero' => $reserva->id, 'motivo' => $reserva->motivoRechazo);
+
+        Mail::queue('mail.rechazo', $data, function($message) use ($reserva)
+        {
+            $message->to($reserva->user->email, $reserva->user->nombres)->subject('Fomento Cultural PJIC -Rechazo reserva '.$reserva->id);
+        });
+
+        return redirect('reservas')->with(array('mensaje' => 'Se ha rechazado correctamente la reserva.', 'tipo' => 'success'));
     }
 
     private function formatearFecha($fecha, $hora)

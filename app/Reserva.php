@@ -17,7 +17,7 @@ class Reserva extends Model {
      *
      * @var array
      */
-    protected $fillable = ['responsable','fechaInicio','fechaFin','comentarios','estado'];
+    protected $fillable = ['responsable','fechaInicio','fechaFin','comentarios','estado', 'motivoRechazo'];
 
     /**
      * The attributes treated as a carbon instance.

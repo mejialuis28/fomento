@@ -3,7 +3,7 @@
 use App\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class InicioController extends Controller {
@@ -79,6 +79,18 @@ class InicioController extends Controller {
 
         return redirect('/');
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function enviarMail()
+    {
+
+    }
+
+
 
 
 }
