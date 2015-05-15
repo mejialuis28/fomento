@@ -64,4 +64,9 @@ Route::get('prestamos/nuevo', 'PrestamosController@nuevo');
 Route::post('prestamos/nuevo', 'PrestamosController@guardar');
 Route::post('prestamos/buscarresponsable', 'PrestamosController@buscarResponsable');
 
-
+// Rutas de préstamos
+Route::get('reportes/inventario', 'ReportesController@inventario');
+Route::get('reportes/reservas', 'ReportesController@reservas');
+Route::get('reportes/prestamos', 'ReportesController@prestamos');
+Route::get('reportes/retrasados', 'ReportesController@retrasados');
+Route::get('reportes/indicadores', 'ReportesController@indicadores');

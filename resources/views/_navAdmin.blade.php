@@ -33,7 +33,7 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="{{url('reportes/inventario')}}">Inventario</a></li>
         <li><a href="{{url('reportes/reservas')}}">Reservas</a></li>
-        <li><a href="{{url('reportes/indicadores')}}">Préstamos</a></li>
+        <li><a href="{{url('reportes/prestamos')}}">Préstamos</a></li>
         <li><a href="{{url('reportes/retrasados')}}">Préstamos no devueltos</a></li>
         <li><a href="{{url('reportes/indicadores')}}">Indicadores</a></li>
     </ul>

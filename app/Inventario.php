@@ -121,10 +121,32 @@ class Inventario extends Model {
      * @param $query
      * @return $query actualizado.
      */
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado', '=', $estado);
+        }
+        return $query;
+    }
+
+    /**
+ * Método personalizado para agregar un where sobre el campo categoría.
+ *
+ * @param $query
+ * @return $query actualizado.
+ */
     public function scopeCat($query, $categoria)
     {
         if ($categoria) {
             return $query->where('categoria', '=', $categoria);
+        }
+        return $query;
+    }
+
+    public function scopeResp($query, $resp)
+    {
+        if ($resp) {
+            return $query->where('responsable', '=', $resp);
         }
         return $query;
     }

@@ -19,7 +19,7 @@
                                 <div class="text-center">
                                     <div class="col-md-4 col-sm-6">
                                         <div class="service-wrapper">
-                                            <i style="font-size: 4em;" class="glyphicon glyphicon-th-list"></i>
+                                            <i style="font-size: 4em;" class="glyphicon glyphicon-calendar"></i>
                                             <h3>Administrar reservas</h3>
                                             <p>Permite administrar las reservas creadas por los usuarios.</p>
                                             <a href="{{ url('reservas') }}" class="btn">Reservas</a>
@@ -35,10 +35,10 @@
                                     </div>
                                     <div class="col-md-4 col-sm-6">
                                         <div class="service-wrapper">
-                                            <i style="font-size: 4em;" class="glyphicon glyphicon-plus"></i>
-                                            <h3>Nueva préstamo</h3>
-                                            <p>Permite realizar un préstamo sin la existencia de una reserva previa.</p>
-                                            <a href="{{ url('prestamos/nuevo') }}" class="btn">Nueva Préstamo</a>
+                                            <i style="font-size: 4em;" class="glyphicon glyphicon-list-alt"></i>
+                                            <h3>Administrar Inventario</h3>
+                                            <p>Permite agregar, editar y eliminar items del inventario.</p>
+                                            <a href="{{ url('inventario') }}" class="btn">Inventario</a>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                 <div class="text-center">
                                     <div class="col-md-4 col-md-offset-2 col-sm-6">
                                         <div class="service-wrapper">
-                                            <i style="font-size: 4em;" class="glyphicon glyphicon-th-list"></i>
+                                            <i style="font-size: 4em;" class="glyphicon glyphicon-calendar"></i>
                                             <h3>Mis reservas</h3>
                                             <p>Administrar mis reservar y visualizar el historial de reservas</p>
                                             <a href="{{ url('reservas/misreservas') }}" class="btn">Mis Reservas</a>

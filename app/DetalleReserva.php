@@ -39,8 +39,18 @@ class DetalleReserva extends Model {
      */
     public $timestamps = false;
 
+
     /**
      * Retorna el item asociado al detalle.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function reserva()
+    {
+        return $this->belongsTo('App\Reserva', 'idReserva');
+    }
+    /**
+     * Retorna la reserva asociada al detalle.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

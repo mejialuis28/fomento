@@ -40,6 +40,16 @@ class DetallePrestamo extends Model {
     public $timestamps = false;
 
     /**
+     * Retorna el préstamo asociado detalle.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function prestamo()
+    {
+        return $this->belongsTo('App\Prestamo', 'idPrestamo');
+    }
+
+    /**
      * Retorna el item asociado al detalle.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
