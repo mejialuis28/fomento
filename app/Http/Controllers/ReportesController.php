@@ -197,8 +197,8 @@ class ReportesController extends Controller {
                 ->groupBy('tipousuario.nombre')
                 ->get();
 
-            $prestamosPorCategoria = DB::table('detallePrestamos')->join('prestamos', 'detallePrestamos.idPrestamo', '=', 'prestamos.id')
-                ->join('inventario', 'detallePrestamos.idInventario', '=', 'inventario.id')
+            $prestamosPorCategoria = DB::table('detalleprestamos')->join('prestamos', 'detalleprestamos.idPrestamo', '=', 'prestamos.id')
+                ->join('inventario', 'detalleprestamos.idInventario', '=', 'inventario.id')
                 ->join('categorias', 'inventario.categoria', '=', 'categorias.id')
                 ->whereBetween('prestamos.fechaInicio', [$fechaIni,$fechaFin])
                 ->select(DB::raw('count(*) as cantidad, categorias.nombre as categoria'))

@@ -32,7 +32,7 @@ class InventarioController extends Controller {
 	 */
 	public function index()
 	{
-        $input = Input::all();
+        $input = Input::except('page');
         $categorias = Categoria::all();
         if($input)
         {

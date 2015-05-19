@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <div class="form-group">
-                            <label for="txtObservacionesDevolucion" class="col-md-2 control-label">Comentarios Entrega</label>
+                            <label for="txtObservacionesDevolucion" class="col-md-2 control-label">Comentarios Devolución</label>
                             <div class="col-md-10">
                                 <textarea id="txtObservacionesDevolucion" rows="3" name="observacionesDevolucion" class="form-control"></textarea>
                             </div>
