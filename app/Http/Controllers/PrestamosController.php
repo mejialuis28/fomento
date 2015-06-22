@@ -225,15 +225,7 @@ class PrestamosController extends Controller {
 
     private function formatearFecha($fecha, $hora)
     {
-        list($tiempo, $meridiano) = explode(' ', $hora);
-        if($meridiano == 'PM')
-        {
-            list($hh, $mm) = explode(':', $tiempo);
-            $hh = $hh + 12;
-            $tiempo = $hh.':'.$mm;
-        }
-        $fechaFormateada = $fecha.' '.$tiempo;
-        return $fechaFormateada;
+        return $fecha.' '.$hora;
     }
 
 }

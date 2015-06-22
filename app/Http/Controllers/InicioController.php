@@ -64,7 +64,7 @@ class InicioController extends Controller {
         return redirect('login')
             ->withInput($request->only('documento'))
             ->withErrors([
-                'documento' => 'Las información ingresada no es correcta, Intente nuevamente.'
+                'documento' => 'El documento o contraseña ingresados no son correctos. Verifique la información e intente nuevamente.'
             ]);
     }
 

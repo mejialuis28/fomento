@@ -4,10 +4,10 @@
     <div>
         <div class="container">
             <h2 class="text-center">Sistema de inventario, reserva y préstamo de instrumentos</h2>
-            <h3 class="text-center">Laboratorio de Fomento Cultural Politecnico JIC.</h3>
+            <h3 class="text-center">Laboratorio de Fomento Cultural Politecnico Colombiano Jaime Isaza Cadavid.</h3>
             </br>
             <p class="lead">
-                El de inventario, reserva y préstamo de instrumentos permite al laboratorio de Fomento Cultural del Politécnico Jaime Isaza Cadavid proveer a la comunidad Politécnica una opción simple para reservar instrumentos que el laboratorio ha puesto a su disposición.
+                El de inventario, reserva y préstamo de instrumentos permite al laboratorio de Fomento Cultural del Politécnico Colombiano Jaime Isaza Cadavid proveer a la comunidad Politécnica una opción simple para reservar instrumentos que el laboratorio ha puesto a su disposición.
             </p>
             @if(Auth::guest())
             <p class="text-center"><a href="{{ url('login') }}" class="btn btn-primary btn-lg">Ingresar &raquo;</a></p>

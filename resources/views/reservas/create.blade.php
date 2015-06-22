@@ -183,12 +183,34 @@
                 return false;
             });
 
-             $("#frmGeneral").submit(function() {                
-                 $('<input />').attr('type', 'hidden')
-                  .attr('name', 'items')
-                  .attr('value', JSON.stringify(items))
-                  .appendTo('#frmGeneral');
-                return true;
+             $("#frmGeneral").submit(function() {
+                 if($("#txtFecha").val() == "")
+                 {
+                     alert("Debe seleccionar una fecha de reserva");
+                     return false;
+                 }
+                 var fecha = ObtenerFechaFormateada($("#txtFecha").val());
+                 var fechaActual = ObtenerFechaActual();
+                 if(fecha < fechaActual)
+                 {
+                     alert("La fecha de la reserva no puede ser menor a la fecha actual.");
+                     return false;
+                 }
+                 if(!validarHoras()) {
+                     alert('La hora final debe ser mayor a la hora inicial');
+                     return false;
+                 }
+                 if(items.length > 0){
+                     $('<input />').attr('type', 'hidden')
+                             .attr('name', 'items')
+                             .attr('value', JSON.stringify(items))
+                             .appendTo('#frmGeneral');
+                     return true;
+                 }
+                 else{
+                     alert("No se puede enviar una reserva sin items asociados.");
+                     return false;
+                 }
             });
         });
 
@@ -261,6 +283,52 @@
             for(var i = 0; i < items.length; i++)
             {
                 InsertarItem(items[i]);
+            }
+        }
+
+        function ObtenerFechaActual() {
+            var date = new Date().setHours(0,0,0,0);
+            return date;
+        }
+
+        function ObtenerFechaFormateada(fecha) {
+            var arrayFecha = fecha.split("/");
+            var dia = arrayFecha[0];
+            var mes = arrayFecha[1] - 1;
+            var ano = arrayFecha[2];
+            var date = new Date(ano,mes,dia,0,0,0,0);
+            return date;
+        }
+
+        function validarHoras() {
+            var arrayIni = $("#horaIni").val().split(" ");
+            var arrayFin = $("#horaFin").val().split(" ");
+            var meridianoIni = arrayIni["1"];
+            var meridianoFin = arrayFin["1"];
+            if(meridianoFin != meridianoIni)
+            {
+                if(meridianoIni == 'AM')
+                    return true;
+                else
+                    return false;
+            }
+            else{
+                var horaIni = arrayIni[0].split(":");
+                var horaFin = arrayFin[0].split(":");
+                if(horaIni[0] == "12")
+                {
+                    horaIni[0] = "0";
+                }
+                if(horaFin[0] == "12")
+                {
+                    horaFin[0] = "0";
+                }
+                var ini = "" + horaIni[0]+horaIni[1];
+                var fin = "" + horaFin[0]+horaFin[1];
+                if(fin > ini)
+                    return true;
+                else
+                    return false;
             }
         }
 

@@ -36,12 +36,12 @@ class Reserva extends Model {
 
     public function setFechaInicioAttribute($date)
     {
-        $this->attributes['fechaInicio'] = Carbon::createFromFormat('d/m/Y H:i', $date);
+        $this->attributes['fechaInicio'] = Carbon::createFromFormat('d/m/Y h:i A', $date);
     }
 
     public function setFechaFinAttribute($date)
     {
-        $this->attributes['fechaFin'] = Carbon::createFromFormat('d/m/Y H:i', $date);
+        $this->attributes['fechaFin'] = Carbon::createFromFormat('d/m/Y h:i A', $date);
     }
 
     /**

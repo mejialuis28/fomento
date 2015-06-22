@@ -62,7 +62,7 @@
         @if (count($errors) > 0)
             <div class="alert alert-dismissible alert-danger">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Jumm!</strong> Existen errores en la pagina.<br><br>
+                <strong>Se presentaron los siguientes errores en la página:</strong><br><br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -73,7 +73,7 @@
             @if(Session::get('tipo') == 'error')
                 <div class="alert alert-dismissible alert-danger">
                     <button type="button" class="close" data-dismiss="alert">×</button>
-                    <strong>Jumm!</strong> Se presentó un error.<br><br>
+                    <strong>Se presentó el siguiente error en la página:</strong><br><br>
                     <p>{{Session::get('mensaje')}}</p>
                 </div>
             @elseif(Session::get('tipo') == 'success')
@@ -104,7 +104,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="footer-copyright">&copy; 2015 Politecnico Colombiano JIC. Todos los derechos reservados.</div>
+                <div class="footer-copyright">&copy; 2015 Politecnico Colombiano Jaime Isaza Cadavid. Todos los derechos reservados.</div>
             </div>
         </div>
     </div>
