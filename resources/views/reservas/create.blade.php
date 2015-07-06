@@ -31,18 +31,18 @@
                         <div class="form-group">
                             <label for="txtFecha" class="col-md-2 control-label">Fecha reserva</label>
                             <div class="col-md-4">
-                                <input id="txtFecha" name="fecha" data-date-format="dd/mm/yyyy" class="form-control" required type="text" placeholder=" dd/mm/aaaa"/>
+                                <input id="txtFecha" name="fecha" data-date-format="dd/mm/yyyy" value="{{ Input::old('fecha') }}" class="form-control" required type="text" placeholder=" dd/mm/aaaa"/>
                             </div>
                             <label  class="col-md-2 control-label">Hora inicial y final</label>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaIni" name="horaIni" type="text" class="form-control" required/>
+                                    <input id="horaIni" name="horaIni" type="text" class="form-control" value="{{ Input::old('horaIni') }}" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaFin" name="horaFin" type="text" class="form-control" required/>
+                                    <input id="horaFin" name="horaFin" type="text" class="form-control" value="{{ Input::old('horaFin') }}" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="txtComentario" class="col-md-2 control-label">Comentarios</label>
                             <div class="col-md-10">
-                                <textarea id="txtComentario" rows="3" name="comentarios" required class="form-control" placeholder="Comentarios"></textarea>
+                                <textarea id="txtComentario" rows="3" name="comentarios" required class="form-control" placeholder="Comentarios">{{ Input::old('comentarios') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -266,10 +266,18 @@
             var est = tds[3].innerHTML;
 
             var nuevoItem = new Item(itemId,placa,desc, cat, est);
-            items.push(nuevoItem);
-            InsertarItem(nuevoItem);
 
-            $('#mdlNuevo').modal('hide');
+            var filtro = items.filter(function(obj) {
+                return (obj.id === itemId);
+            });
+            if(filtro.length == 0){
+                items.push(nuevoItem);
+                InsertarItem(nuevoItem);
+                $('#mdlNuevo').modal('hide');
+            }
+            else{
+                alert('El item seleccionado ya se encuentra agregado a la reserva');
+            }
         }
 
 

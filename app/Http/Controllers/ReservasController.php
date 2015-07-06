@@ -4,6 +4,7 @@ use App\DetalleReserva;
 use App\EstadoReserva;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Categoria;
 use App\Reserva;
 use App\Prestamo;
@@ -83,6 +84,11 @@ class ReservasController extends Controller {
         $fechaInicio = $this->formatearFecha($fecha, $horaIni);
         $fechaFin = $this->formatearFecha($fecha, $horaFin);
 		$items = json_decode(Input::get('items'));
+        $placa = $this->validarItems($items, $fechaInicio, $fechaFin);
+        if($placa != '')
+        {
+            return redirect()->back()->withInput()->with(array('mensaje' => 'El item de placa '.$placa.' no está disponible para el horario de la reserva.' , 'tipo' => 'error'));
+        }
 
         //DB::transaction(function($fechaInicio, $fechaFin, $comentarios, $items)
         //    use($fechaInicio, $fechaFin, $comentarios, $items)
@@ -159,6 +165,38 @@ class ReservasController extends Controller {
     private function formatearFecha($fecha, $hora)
     {
         return $fecha.' '.$hora;
+    }
+
+    private function validarItems($items, $fechaIni, $fechaFin)
+    {
+        $ini =  Carbon::createFromFormat('d/m/Y h:i A', $fechaIni);
+        $fin = Carbon::createFromFormat('d/m/Y h:i A', $fechaFin);
+
+        $reservas = Reserva::whereBetween('fechaInicio', [$ini,$fin])->orWhere(function($query) use ($ini, $fin)
+        {
+            $query->whereBetween('fechaFin', [$ini,$fin]);
+        })->orWhere(function($query) use ($ini, $fin)
+        {
+            $query->where('fechaInicio', '<=', $ini)
+                    ->where('fechaFin', '>=', $ini);
+        })->get();
+
+        if($reservas)
+        {
+            foreach ($reservas as $reserva) {
+                foreach ($items as $item) {
+                    $itemExiste = $reserva->items->filter(function($it) use($item) {
+                        return $it->idInventario == $item->id;
+                    })->first();
+                    if($itemExiste)
+                    {
+                        return $item->placa;
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 
 }

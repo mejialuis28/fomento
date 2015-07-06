@@ -16,17 +16,19 @@
                 <fieldset>
                     <div>
                         <div class="form-group">
-                            <input id="resp" name="responsable" type="hidden" class="form-control" />
+                            <input id="resp" name="responsable" value="{{ Input::old('responsable') }}" type="hidden" class="form-control" />
+                            <input id="nombreResp" name="nombreResp" value="{{ Input::old('nombreResp') }}" type="hidden" class="form-control" />
+                            <input id="docResp" name="docResp" value="{{ Input::old('docResp') }}" type="hidden" class="form-control" />
                             <label for="txtResp" class="col-md-2 control-label">Responsable</label>
                             <div class="col-md-4">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="txtResp" name="txtResponsable" type="text" class="form-control" required disabled/>
-                                    <span class="input-group-btn"><button class="btn btn-default" onclick="abrirModalResponsable()"><i class="glyphicon glyphicon-plus"></i></button></span>
+                                    <input id="txtResp" name="txtResponsable" value="{{ Input::old('nombreResp') }}" type="text" class="form-control" required disabled/>
+                                    <span class="input-group-btn"><button type="button" class="btn btn-default" onclick="abrirModalResponsable()"><i class="glyphicon glyphicon-plus"></i></button></span>
                                 </div>
                             </div>
                             <label for="txtDoc" class="col-md-2 control-label">Documento</label>
                             <div class="col-md-4">
-                                <input id="txtDoc" name="documento" class="form-control" type="text" disabled/>
+                                <input id="txtDoc" name="documento" value="{{ Input::old('docResp') }}" class="form-control" type="text" disabled/>
                             </div>
                         </div>
                     </div>
@@ -39,13 +41,13 @@
                             <label  class="col-md-2 control-label">Hora inicial y final</label>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaIni" name="horaIni" type="text" class="form-control" required/>
+                                    <input id="horaIni" name="horaIni" value="{{ Input::old('horaIni') }}" type="text" class="form-control" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="input-group bootstrap-timepicker">
-                                    <input id="horaFin" name="horaFin" type="text" class="form-control" required/>
+                                    <input id="horaFin" name="horaFin" value="{{ Input::old('horaFin') }}" type="text" class="form-control" required/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
@@ -55,7 +57,7 @@
                         <div class="form-group">
                             <label for="txtComentario" class="col-md-2 control-label">Comentarios Entrega</label>
                             <div class="col-md-10">
-                                <textarea id="txtComentario" rows="3" name="observacionesEntrega" required class="form-control" placeholder="Observaciones Entrega"></textarea>
+                                <textarea id="txtComentario" rows="3" name="observacionesEntrega" required class="form-control" placeholder="Observaciones Entrega">{{ Input::old('observacionesEntrega') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -337,10 +339,18 @@
             var est = tds[3].innerHTML;
 
             var nuevoItem = new Item(itemId,placa,desc, cat, est);
-            items.push(nuevoItem);
-            InsertarItem(nuevoItem);
 
-            $('#mdlNuevo').modal('hide');
+            var filtro = items.filter(function(obj) {
+                return (obj.id === itemId);
+            });
+            if(filtro.length == 0){
+                items.push(nuevoItem);
+                InsertarItem(nuevoItem);
+                $('#mdlNuevo').modal('hide');
+            }
+            else{
+                alert('El item seleccionado ya se encuentra agregado a la reserva');
+            }
         }
 
         function eliminarItemReserva(itemId)
@@ -362,8 +372,9 @@
             var fila = $(elemento).closest('tr');
             $('#resp').val(idResponsable);
             $('#txtResp').val(fila.children()[1].innerHTML);
+            $('#nombreResp').val(fila.children()[1].innerHTML);
             $('#txtDoc').val(fila.children()[0].innerHTML);
-
+            $('#docResp').val(fila.children()[0].innerHTML);
             $('#mdlResponsable').modal('hide');
         }
 

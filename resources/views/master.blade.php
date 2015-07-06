@@ -122,7 +122,7 @@
 @yield('scripts')
 <script type="text/javascript">
     //script para cerrar las alertas.
-    window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
+    window.setTimeout(function() { $(".alert").alert('close'); }, 5000);
 </script>
 </body>
 </html>

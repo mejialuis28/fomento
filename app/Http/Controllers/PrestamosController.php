@@ -102,6 +102,12 @@ class PrestamosController extends Controller {
         $fechaFin = $this->formatearFecha($fecha, $horaFin);
         $items = json_decode(Input::get('items'));
 
+        $placa = $this->validarItems($items, $fechaInicio, $fechaFin);
+        if($placa != '')
+        {
+            return redirect()->back()->withInput()->with(array('mensaje' => 'El item de placa '.$placa.' no está disponible para el horario del préstamo.' , 'tipo' => 'error'));
+        }
+
         $nuevoPrestamo = Prestamo::create(array('responsable' => $responsable,
             'fechaInicio' => $fechaInicio,
             'fechaFin' => $fechaFin,
@@ -226,6 +232,38 @@ class PrestamosController extends Controller {
     private function formatearFecha($fecha, $hora)
     {
         return $fecha.' '.$hora;
+    }
+
+    private function validarItems($items, $fechaIni, $fechaFin)
+    {
+        $ini =  Carbon::createFromFormat('d/m/Y h:i A', $fechaIni);
+        $fin = Carbon::createFromFormat('d/m/Y h:i A', $fechaFin);
+
+        $prestamos = Prestamo::whereBetween('fechaInicio', [$ini,$fin])->orWhere(function($query) use ($ini, $fin)
+        {
+            $query->whereBetween('fechaFin', [$ini,$fin]);
+        })->orWhere(function($query) use ($ini, $fin)
+        {
+            $query->where('fechaInicio', '<=', $ini)
+                ->where('fechaFin', '>=', $ini);
+        })->get();
+
+        if($prestamos)
+        {
+            foreach ($prestamos as $prestamo) {
+                foreach ($items as $item) {
+                    $itemExiste = $prestamo->items->filter(function($it) use($item) {
+                        return $it->idInventario == $item->id;
+                    })->first();
+                    if($itemExiste)
+                    {
+                        return $item->placa;
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 
 }
